@@ -7,8 +7,19 @@ with workflow.unsafe.imports_passed_through():
 
 @workflow.defn
 class SayHello:
+    signal = ''
+
+    @workflow.signal
+    async def hello_signal(self, name: str) -> str:
+        self.signal = name
+
     @workflow.run
     async def run(self, name: str) -> str:
+        # op =  await workflow.execute_activity(
+        #     say_hello, name, start_to_close_timeout=timedelta(seconds=100)
+        # )
+        # await workflow.wait_condition(lambda: self.signal == 'GO')
+        # return op
         return await workflow.execute_activity(
-            say_hello, name, start_to_close_timeout=timedelta(seconds=5)
+            say_hello, name, start_to_close_timeout=timedelta(seconds=100)
         )
